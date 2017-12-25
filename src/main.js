@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 
 import './assets/css/normalize.css'
-import './assets/css/font-awesome.min.css'
+require('font-awesome-webpack')
 
 Vue.config.productionTip = false
 
