@@ -49,6 +49,9 @@
           'fa fa-search': 'search'
         }
       }
+    },
+    mounted () {
+      this.$router.replace({name: 'article'})
     }
   }
 </script>

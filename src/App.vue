@@ -12,7 +12,7 @@ export default {
 
 <style lang='scss'>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Meta,Helvetica Neue,Hiragino Sans GB,PingFang SC,Microsoft YaHei,Arial,simhei,sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height:100%;
