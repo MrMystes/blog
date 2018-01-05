@@ -2,20 +2,26 @@
   <div class="article-wrapper">
     <div class="content">
       <header class="header">
+        <div class="title-wrapper">
         <h1 class="title">{{article.title}}</h1>
-        <div class="info">
-          <div class="tags">
-            <i class="fa fa-tag" aria-hidden="true"></i>
-            <div class="tag" :key="tag" v-for="tag in article.tag.split(',')">
-              <div class="traingle" :style="{'border-right-color':randomColor}"></div>
-              <span class="tag-content" :style="{'background-color':randomColor}">{{tag}}</span>
-            </div>
+        <div class="tags">
+          <i class="fa fa-tag" aria-hidden="true"></i>
+          <div class="tag" :key="tag" v-for="tag in article.tag.split(',')">
+            <div class="traingle" :style="{'border-right-color':randomColor(tag)}"></div>
+            <span class="tag-content" :style="{'background-color':randomColor(tag)}">{{tag}}</span>
           </div>
+        </div>
+        </div>
+
+        <div class="info">
           <time class="time">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
             {{article.lastUpdate | timeFilter}}
           </time>
+          <span class="comments">0 comments</span>
+          <span class="read-count">{{article.readCount}} read</span>
         </div>
+
       </header>
       <section class="section markdown-body" v-html="article.content"></section>
     </div>
@@ -34,9 +40,9 @@
         tagColors: ['rgb(156, 145, 161)', 'rgb(125, 198, 230)', 'rgb(255, 170, 130)']
       }
     },
-    computed: {
-      randomColor () {
-        return this.tagColors[parseInt(Math.random() * 2)]
+    methods: {
+      randomColor (tag) {
+        return this.tagColors[tag.length % 3]
       }
     },
     filters: {
@@ -70,19 +76,10 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        .title{
-          flex:1 1 auto
-        }
-        .info {
-          flex: 0 0 200px;
-          display: flex;
-          flex-direction: column;
-          align-items:flex-start;
-          justify-content: center;
-          font-size: 16px;
-
-          &>:nth-child(n){
-            margin-bottom:10px;
+        .title-wrapper{
+          .title{
+            flex:1 1 auto;
+            margin:0 0 20px 0;
           }
           .tags {
             display: flex;
@@ -112,6 +109,19 @@
               }
             }
           }
+        }
+        .info {
+          flex: 0 0 200px;
+          display: flex;
+          flex-direction: column;
+          align-items:flex-end;
+          font-size: 16px;
+          margin-top:10px;
+
+          &>:nth-child(n){
+            margin-bottom:10px;
+          }
+
         }
       }
       .section{

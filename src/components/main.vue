@@ -1,6 +1,6 @@
 <template>
   <div class="main-wrapper">
-    <div class="sidebar">
+    <div class="sidebar" :style="{transform:`translate3d(${siderBarCurrentX}px,0,0)`}">
       <div class="wrap">
         <div class="profile">
           <img src="../assets/images/head.jpg" alt="">
@@ -23,8 +23,8 @@
         </div>
       </div>
     </div>
-    <div class="header">
-      <div class="left">
+    <div class="header" :style="{transform:`translate3d(${contentCurrentX}px,0,0)`}">
+      <div class="left" @click.stop="showBar">
         <i class="fa fa-bars" aria-hidden="true"></i>
       </div>
       <span class="title">Mystes's Blog</span>
@@ -32,7 +32,7 @@
         <img src="../assets/images/head.jpg" alt="">
       </div>
     </div>
-    <router-view class="content" />
+    <router-view class="content" :style="{transform:`translate3d(${contentCurrentX}px,0,0)`}" />
   </div>
 </template>
 
@@ -46,7 +46,10 @@
           'tag': '标签',
           'user': '关于',
           'link': '友链'
-        }
+        },
+        siderBarCurrentX: 0,
+        contentCurrentX: 0,
+        barStatus: false
       }
     },
     filters: {
@@ -57,10 +60,42 @@
     methods: {
       jump (name) {
         this.$router.replace({name: name})
+      },
+      transForm (offset) {
+        let eachOffset = (offset - this.contentCurrentX) / 30
+        console.log(eachOffset)
+        let each = _ => {
+          this.siderBarCurrentX += eachOffset
+          this.contentCurrentX += eachOffset
+          if (this.contentCurrentX > 0 && this.contentCurrentX < 250) {
+            window.requestAnimationFrame(each)
+          } else {
+            this.contentCurrentX = offset
+            this.siderBarCurrentX = offset - 250
+          }
+        }
+        window.requestAnimationFrame(each)
+      },
+      showBar () {
+        if (this.barStatus) {
+          this.transForm(0)
+        } else {
+          this.transForm(250)
+        }
+        this.barStatus = !this.barStatus
+      },
+      resizeBar () {
+        if (document.body.scrollWidth < 768) {
+          this.siderBarCurrentX = -250
+        } else {
+          this.siderBarCurrentX = 0
+        }
       }
     },
     mounted () {
       this.$router.replace({name: 'home'})
+      this.resizeBar()
+      window.onresize = this.resizeBar
     }
   }
 </script>
@@ -69,7 +104,8 @@
   .main-wrapper {
     display: flex;
     flex-direction: row;
-    width: 100vw;
+
+
     height: 100vh;
     .sidebar {
       background: #202020;
@@ -120,10 +156,11 @@
       flex: 1 1 auto;
       overflow-y: scroll;
       overflow-x: hidden;
+
     }
   }
 
-  @media screen and (max-width:1024px) {
+  @media screen and (max-width:1024px) and (min-width:768px) {
     .main-wrapper {
       .sidebar {
         flex: 0 0 75px;
@@ -160,7 +197,7 @@
         left: 0;
         flex: none;
         width: 250px;
-        transform: translate3d(-250px, 0, 0);
+
       }
       .header {
         display: flex;

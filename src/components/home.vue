@@ -1,7 +1,7 @@
 <template>
   <div class="home-wrapper">
     <div class="article-list">
-      <article class="article-item" :key="item.uniqueId" v-for="item in articles">
+      <article class="article-item" @click.stop="jumpToArticle(item.uniqueId)" :key="item.uniqueId" v-for="item in articles">
         <header class="header">
           <h3 class="title">
             <router-link :to="'/article/'+item.uniqueId">{{item.title}}</router-link>
@@ -24,7 +24,8 @@
     data () {
       return {
         articles: [],
-        count: 0
+        count: 0,
+        isSamllScreen: false
       }
     },
     filters: {
@@ -43,17 +44,32 @@
           .catch(err => {
             console.log(err)
           })
+      },
+      jumpToArticle (uniqueId) {
+        if (this.isSamllScreen) {
+          this.$router.push({path: `/article/${uniqueId}`})
+        }
+      },
+      onReSize () {
+        const screenSize = document.body.scrollWidth
+        console.log(screenSize)
+        if (screenSize < 768) {
+          this.isSamllScreen = true
+        } else {
+          this.isSamllScreen = false
+        }
       }
     },
     mounted () {
       this.refresh()
+      this.onReSize()
+      window.onresize = this.onReSize
     }
   }
 </script>
 <style lang="scss" scoped>
   .home-wrapper {
     .article-list {
-
       .article-item {
         display: flex;
         flex-direction: column;
@@ -61,29 +77,37 @@
         background-color: #fafafa;
         margin:10px 20px;
         border-radius: 10px;
-        padding:0 10px 30px 10px;
+        padding:0 10px 20px 10px;
         transition: all 0.3s ease-in-out;
+        max-width: 1120px;
         &:hover{
           box-shadow: 5px 5px 30px gray;
         }
         .header {
+          display: flex;
+          flex-direction: row;
+          justify-content:space-between;
+          width:100%;
+          margin: 10px 0;
           .title {
             font-size: 30px;
-            font-weight: 400;
-            text-align: center;
-            display: inline-block;
+            font-weight: 550;
+            margin:0;
             a {
               text-decoration: none;
               color: black;
             }
           }
           .time {
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
             color: gray;
             font-size: 14px;
             padding: 3px 0;
             & > span:first-child{
-              margin-right: 20px;
+              margin-bottom: 10px;
+
             }
           }
         }
@@ -91,10 +115,15 @@
           margin-top:30px;
           align-self: flex-start;
           font-size:20px;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 3;
+          overflow: hidden;
+
         }
         .footer{
           margin-top:20px;
-
+          align-self: flex-end;
           border-radius: 5px;
           background-color:#16a085;
           padding:10px 15px;
@@ -107,9 +136,20 @@
             text-decoration: none;
             color:#fff;
           }
-
         }
       }
+    }
+  }
+
+  @media screen and (max-width : 768px) {
+    .title{
+      font-size:20px!important;
+    }
+    .description{
+      font-size:16px!important;
+    }
+    .footer{
+      display:none;
     }
   }
 
