@@ -104,7 +104,7 @@
   .main-wrapper {
     display: flex;
     flex-direction: row;
-
+    overflow-x: hidden;
 
     height: 100vh;
     .sidebar {
@@ -191,13 +191,14 @@
   @media screen and (max-width:768px) {
     .main-wrapper {
       flex-direction: column;
+
       .sidebar {
         position: absolute;
         top: 0;
         left: 0;
         flex: none;
         width: 250px;
-
+        overflow-y: scroll;
       }
       .header {
         display: flex;
