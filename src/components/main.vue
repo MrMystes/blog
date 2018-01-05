@@ -6,16 +6,19 @@
           <img src="../assets/images/head.jpg" alt="">
           <p>Mystes's Blog</p>
         </div>
-        <div class="buttons">
-          <div class="button" :key="key" v-for="(button,key) in buttons">
-            <i :class="key" aria-hidden="true"></i>
+        <div class="buttons" refs="buttons">
+          <div class="button" :key="key" v-for="(button,key) in buttons" @click="jump(key)">
+            <i :class="key | iconFilter" aria-hidden="true"></i>
             <span>{{button}}</span>
           </div>
         </div>
         <div class="links">
-          <div class="link" :key="key" v-for="(link,key) in links">
-            <i :class="key" aria-hidden="true" :alt="link"></i>
-          </div>
+          <a class="link" target="_blank" href="https://github.com/MrMystes">
+            <i class="fa fa-github" aria-hidden="true"></i>
+          </a>
+          <router-link to="/main/search" class="link">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </router-link>
 
         </div>
       </div>
@@ -38,20 +41,26 @@
     data () {
       return {
         buttons: {
-          'fa fa-home': '首页',
-          'fa fa-archive': '归档',
-          'fa fa-tag': '标签',
-          'fa fa-user': '关于',
-          'fa fa-link': '友链'
-        },
-        links: {
-          'fa fa-github': 'github',
-          'fa fa-search': 'search'
+          'home': '首页',
+          'archive': '归档',
+          'tag': '标签',
+          'user': '关于',
+          'link': '友链'
         }
       }
     },
+    filters: {
+      iconFilter (val) {
+        return `fa fa-${val}`
+      }
+    },
+    methods: {
+      jump (name) {
+        this.$router.replace({name: name})
+      }
+    },
     mounted () {
-      this.$router.replace({name: 'article'})
+      this.$router.replace({name: 'home'})
     }
   }
 </script>
@@ -88,6 +97,7 @@
           .button {
             padding: 20px 10px;
             font-size: 20px;
+            cursor: pointer;
           }
         }
         .links {
@@ -97,6 +107,8 @@
           font-size: 20px;
           .link {
             padding: 20px 10px;
+            text-decoration: none;
+            color:#fff
           }
         }
       }
@@ -106,6 +118,8 @@
     }
     .content {
       flex: 1 1 auto;
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
   }
 

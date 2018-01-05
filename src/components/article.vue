@@ -1,103 +1,137 @@
 <template>
   <div class="article-wrapper">
-    <div class="article-list">
-      <article class="article-item" :key="item.uniqueId" v-for="item in articles">
-        <header class="header">
-          <h3 class="title">
-            <router-link :to="'/article/'+item.uniqueId">{{item.title}}</router-link>
-          </h3>
+    <div class="content">
+      <header class="header">
+        <h1 class="title">{{article.title}}</h1>
+        <div class="info">
+          <div class="tags">
+            <i class="fa fa-tag" aria-hidden="true"></i>
+            <div class="tag" :key="tag" v-for="tag in article.tag.split(',')">
+              <div class="traingle" :style="{'border-right-color':randomColor}"></div>
+              <span class="tag-content" :style="{'background-color':randomColor}">{{tag}}</span>
+            </div>
+          </div>
           <time class="time">
-            <span class="date">{{item.createAt | timeFilter}} </span>
-            <span class="tag"> {{item.tag}}</span>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+            {{article.lastUpdate | timeFilter}}
           </time>
-        </header>
-        <p class="description">{{item.description}}</p>
-        <footer class="footer">
-          <router-link :to="'/article/'+item.uniqueId">阅读全文</router-link>
-        </footer>
-      </article>
+        </div>
+      </header>
+      <section class="section markdown-body" v-html="article.content"></section>
     </div>
+    <div class="catalogue"></div>
+
   </div>
 </template>
+
 <script>
+  import 'github-markdown-css'
   export default {
     data () {
       return {
-        articles: [],
-        count: 0
+        uniqueId: '',
+        article: {},
+        tagColors: ['rgb(156, 145, 161)', 'rgb(125, 198, 230)', 'rgb(255, 170, 130)']
+      }
+    },
+    computed: {
+      randomColor () {
+        return this.tagColors[parseInt(Math.random() * 2)]
       }
     },
     filters: {
-      timeFilter (timeStamp) {
-        let createAt = new Date(parseInt(timeStamp))
-        return createAt.toLocaleString()
-      }
-    },
-    methods: {
-      refresh () {
-        this.$http.get(`/posts?status=0&fields=title,lastUpdate,readCount,tag,status,description,uniqueId`)
-          .then(res => {
-            this.articles = res.data
-            this.count = res.data.length
-          })
-          .catch(err => {
-            console.log(err)
-          })
+      timeFilter (val) {
+        let lastUpdate = new Date(Number(val))
+        return lastUpdate.toLocaleString()
       }
     },
     mounted () {
-      this.refresh()
+      this.uniqueId = this.$route.params.id
+      this.$http.get(`/posts/${this.uniqueId}`)
+        .then(res => {
+          this.article = res.data
+        })
+        .catch(err => {
+          this.$message.warning(err.res.data)
+        })
     }
   }
 </script>
+
 <style lang="scss" scoped>
   .article-wrapper {
-    .article-list {
-      .article-item {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+
+    .content {
+      width:100%;
+      .header {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: #fafafa;
-        margin:10px 20px;
-        border-radius: 10px;
-        padding:0 10px 30px 10px;
-        transition: all 0.3s ease-in-out;
-        &:hover{
-          box-shadow: 5px 5px 30px gray;
+        flex-direction: row;
+        justify-content: space-between;
+        .title{
+          flex:1 1 auto
         }
-        .header {
-          align-self: flex-start;
-          .title {
-            font-size: 30px;
-            font-weight: 400;
-            text-align: center;
-            a {
-              text-decoration: none;
-              color: black;
+        .info {
+          flex: 0 0 200px;
+          display: flex;
+          flex-direction: column;
+          align-items:flex-start;
+          justify-content: center;
+          font-size: 16px;
+
+          &>:nth-child(n){
+            margin-bottom:10px;
+          }
+          .tags {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            i{
+              font-size:20px;
+            }
+            .tag {
+              margin-left: 10px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              .traingle {
+                display: inline-block;
+                width: 0;
+                height: 0;
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                border-right: 12px solid;
+              }
+              .tag-content {
+                margin-left: 1px;
+                padding: 3px 20px;
+                border-radius: 5px;
+                color: white;
+              }
             }
           }
-          .time {
-            color: gray;
-            font-size: 14px;
-            border-top: 1px solid gray;
-            border-bottom: 1px solid gray;
-            padding: 3px 0;
-            & > span:first-child{
-              margin-right: 20px;
-            }
-          }
-        }
-        .description{
-          margin-top:30px;
-          align-self: flex-start;
-        }
-        .footer{
-          margin-top:30px;
-          align-self: flex-end;
         }
       }
+      .section{
+        margin-top:20px;
+      }
+    }
+    .catalogue{
+      flex:0 0 200px;
     }
   }
 
+  @media screen and (max-width:768px){
+    .catalogue{
+      display: none;
+    }
+    .info{
+      display: none!important;
+    }
+  }
 </style>
+
+
 

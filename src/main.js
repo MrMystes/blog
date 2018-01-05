@@ -5,10 +5,11 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import './assets/css/normalize.css'
+import './assets/css/highlight.css'
 require('font-awesome-webpack')
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080/'
+  baseURL: 'http://106.14.205.89:8080/'
 })
 
 Vue.config.productionTip = false
