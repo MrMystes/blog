@@ -58,6 +58,7 @@
         } else {
           this.isSamllScreen = false
         }
+        this.$emit('resize')
       }
     },
     mounted () {

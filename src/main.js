@@ -9,7 +9,7 @@ import './assets/css/highlight.css'
 require('font-awesome-webpack')
 
 const instance = axios.create({
-  baseURL: 'http://106.14.205.89:8080/'
+  baseURL: 'http://api.ayuki.ink/'
 })
 
 Vue.config.productionTip = false

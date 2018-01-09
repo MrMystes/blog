@@ -32,7 +32,7 @@
         <img src="../assets/images/head.jpg" alt="">
       </div>
     </div>
-    <router-view class="content" :style="{transform:`translate3d(${contentCurrentX}px,0,0)`}" />
+    <router-view @resize="resizeBar" class="content" :style="{transform:`translate3d(${contentCurrentX}px,0,0)`}" />
   </div>
 </template>
 
