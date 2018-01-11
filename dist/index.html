@@ -1,1 +1,49 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width"><title>blog</title><link href=./static/css/app.7fdca55111b6c971f8a1f87f0ba38715.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.c0211f45f44a7260ac70.js></script><script type=text/javascript src=./static/js/vendor.0a7f9bec2cd130a63acd.js></script><script type=text/javascript src=./static/js/app.f0d886f96e0804a65df9.js></script></body></html>
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width"><title>blog</title><script>(function (designWidth, maxWidth, minWidth) {
+      var doc = document,
+        win = window,
+        docEl = doc.documentElement,
+        remStyle = document.createElement("style"),
+        tid;
+
+      function refreshRem() {
+        var width = docEl.getBoundingClientRect().width;
+        maxWidth = maxWidth || 1024;
+        minWidth = minWidth || 540;
+        width > maxWidth && (width = maxWidth);
+        width < minWidth && (width = minWidth);
+        console.log('width',width)
+        var rem = width * 100 / designWidth;
+        remStyle.innerHTML = 'html{font-size:' + rem + 'px;}';
+      }
+
+      if (docEl.firstElementChild) {
+        docEl.firstElementChild.appendChild(remStyle);
+      } else {
+        var wrap = doc.createElement("div");
+        wrap.appendChild(remStyle);
+        doc.write(wrap.innerHTML);
+        wrap = null;
+      }
+      //要等 wiewport 设置好后才能执行 refreshRem，不然 refreshRem 会执行2次；
+      refreshRem();
+
+      win.addEventListener("resize", function () {
+        clearTimeout(tid); //防止执行两次
+        tid = setTimeout(refreshRem, 300);
+      }, false);
+
+      win.addEventListener("pageshow", function (e) {
+        if (e.persisted) { // 浏览器后退的时候重新计算
+          clearTimeout(tid);
+          tid = setTimeout(refreshRem, 300);
+        }
+      }, false);
+
+      if (doc.readyState === "complete") {
+        doc.body.style.fontSize = "16px";
+      } else {
+        doc.addEventListener("DOMContentLoaded", function (e) {
+          doc.body.style.fontSize = "16px";
+        }, false);
+      }
+    })(1024, 1024, 768);</script><link href=./static/css/app.0f72dc804e3bb7f5b0e38add2c0b63b6.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=./static/js/manifest.4941f7572cbfc199ff4e.js></script><script type=text/javascript src=./static/js/vendor.0a7f9bec2cd130a63acd.js></script><script type=text/javascript src=./static/js/app.6db1139fb2c19ad95a93.js></script></body></html>
