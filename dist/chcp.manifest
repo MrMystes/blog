@@ -1,0 +1,46 @@
+[
+  {
+    "file": "674f50d287a8c48dc19ba404d20fe713.eot",
+    "hash": "674f50d287a8c48dc19ba404d20fe713"
+  },
+  {
+    "file": "912ec66d7572ff821749319396470bde.svg",
+    "hash": "912ec66d7572ff821749319396470bde"
+  },
+  {
+    "file": "af7ae505a9eed503f8b8e6982036873e.woff2",
+    "hash": "af7ae505a9eed503f8b8e6982036873e"
+  },
+  {
+    "file": "b06871f281fee6b241d60582ae9369b9.ttf",
+    "hash": "b06871f281fee6b241d60582ae9369b9"
+  },
+  {
+    "file": "fee66e712a8a08eef5805a46892932ad.woff",
+    "hash": "fee66e712a8a08eef5805a46892932ad"
+  },
+  {
+    "file": "index.html",
+    "hash": "fece531f2e0b5cb7db2ad5240ad82d39"
+  },
+  {
+    "file": "static/css/app.37e2f2376a74bbc300866d3c0b86e419.css",
+    "hash": "9d0cb486abc2aefede3daa6d5ba054d1"
+  },
+  {
+    "file": "static/img/head.436bc6c.jpg",
+    "hash": "436bc6ce064276363da4a5aac28e88e3"
+  },
+  {
+    "file": "static/js/app.d42743e941ac65cead09.js",
+    "hash": "39f722f625c93baf9f91170a01f08112"
+  },
+  {
+    "file": "static/js/manifest.40f27a165290d2bbd2fd.js",
+    "hash": "190f3a1263670e352c8af8c5d4a338c0"
+  },
+  {
+    "file": "static/js/vendor.0a7f9bec2cd130a63acd.js",
+    "hash": "11829e7593fab7161c7a4082358beae1"
+  }
+]
